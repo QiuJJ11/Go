@@ -1,0 +1,50 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func Write1(name1 chan string, name2 chan string){
+	s1 := <- name1
+	fmt.Println(s1)
+	name2 <- "李四"
+}
+
+func Write2(name2 chan string, name3 chan string){
+	s2 := <- name2
+	fmt.Println(s2)
+	name3 <- "王五"
+}
+
+func Write3(name3 chan string, name4 chan string){
+	s3 := <- name3
+	fmt.Println(s3)
+	name4 <- "赵六"
+}
+
+func Write4(name4 chan string, name1 chan string){
+	s4 := <- name4
+	fmt.Println(s4)
+	name1 <- "张三"
+}
+
+
+func main(){
+	var name1 chan string
+	name1 = make(chan string , 1)
+	name1 <- "张三"
+	var name2 chan string
+	name2 = make(chan string , 1)
+	var name3 chan string
+	name3 = make(chan string , 1)
+	var name4 chan string
+	name4 = make(chan string , 1)
+	for i:=0;i<10;i++{
+		go Write1(name1,name2)
+		go Write2(name2,name3)
+		go Write3(name3,name4)
+		go Write4(name4,name1)
+	}
+	time.Sleep(time.Second)
+}
